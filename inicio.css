@@ -1,0 +1,138 @@
+/* inicio.css: estilos da página Foco+ */
+
+/* a cor principal muda conforme o modo (o JS troca a classe do body) */
+body.foco {
+    --cor: #E5533D;
+}
+
+body.curta {
+    --cor: #2A9D8F;
+}
+
+body.longa {
+    --cor: #3D5A99;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #FFF8F3;
+    color: #1F2A44;
+}
+
+header {
+    background-color: var(--cor);
+    color: white;
+    text-align: center;
+    padding: 30px 20px;
+    transition: background-color 0.5s;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5em;
+}
+
+main {
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.cartao {
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px 30px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.centro {
+    text-align: center;
+}
+
+li {
+    margin-bottom: 8px;
+}
+
+/* botões */
+button {
+    background-color: var(--cor);
+    color: white;
+    border: 2px solid var(--cor);
+    padding: 10px 20px;
+    margin: 0 4px;
+    border-radius: 8px;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.85;
+}
+
+/* botões de modo: vazados, e o modo atual fica preenchido */
+.modo {
+    background-color: white;
+    color: var(--cor);
+    padding: 6px 14px;
+    border-radius: 20px;
+}
+
+body.foco .modo-foco,
+body.curta .modo-curta,
+body.longa .modo-longa {
+    background-color: var(--cor);
+    color: white;
+}
+
+#legenda {
+    color: #6B7280;
+}
+
+.visor {
+    font-size: 5em;
+    font-weight: bold;
+    margin: 0 0 20px;
+}
+
+/* quando o cronômetro está rodando, o JS coloca esta classe no visor */
+.visor.rodando {
+    color: var(--cor);
+}
+
+/* lista de tarefas */
+form {
+    display: flex;
+    gap: 8px;
+}
+
+input {
+    flex: 1;
+    padding: 10px;
+    border: 2px solid #E5E7EB;
+    border-radius: 8px;
+    font-size: 1em;
+}
+
+#lista-tarefas li {
+    padding: 8px 0;
+    border-bottom: 1px solid #F1E4DA;
+    cursor: pointer;
+}
+
+#lista-tarefas li.feita {
+    color: #9CA3AF;
+    text-decoration: line-through;
+}
+
+.dica {
+    color: #6B7280;
+    font-size: 0.9em;
+}
+
+footer {
+    text-align: center;
+    color: #6B7280;
+    padding: 20px;
+}
