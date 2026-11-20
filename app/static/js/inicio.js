@@ -1,11 +1,9 @@
-// inicio.js: cronômetro Pomodoro e lista de tarefas
+// inicio.js: cronômetro Pomodoro
 
 let segundos = 25 * 60;
 let intervalo = null;
 let ciclos = 0;
 let modo = "foco";
-
-// ---------- cronômetro ----------
 
 function atualizarVisor() {
     const minutos = Math.floor(segundos / 60);
@@ -64,34 +62,14 @@ function tempoEsgotado() {
         ciclos++;
         document.getElementById("ciclos").innerText = ciclos;
         if (ciclos % 4 === 0) {
-            alert("4 ciclos concluídos! Faça uma pausa longa.");
+            alert("4 ciclos concluídos! Registre o pomodoro na tarefa e faça uma pausa longa.");
             mudarModo("longa");
         } else {
-            alert("Ciclo concluído! Faça uma pausa curta.");
+            alert("Ciclo concluído! Registre o pomodoro na tarefa e faça uma pausa curta.");
             mudarModo("curta");
         }
     } else {
         alert("A pausa acabou. Hora de voltar a focar!");
         mudarModo("foco");
     }
-}
-
-// ---------- lista de tarefas ----------
-
-function adicionarTarefa() {
-    const campo = document.getElementById("nova-tarefa");
-    const texto = campo.value.trim();
-    if (texto === "") {
-        alert("Digite o nome da tarefa.");
-        return;
-    }
-
-    const item = document.createElement("li");
-    item.innerText = texto;
-    item.onclick = function () {
-        item.classList.toggle("feita"); // clique para marcar ou desmarcar
-    };
-
-    document.getElementById("lista-tarefas").appendChild(item);
-    campo.value = "";
 }

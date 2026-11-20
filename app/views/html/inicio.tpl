@@ -12,15 +12,19 @@
     <header>
         <h1>🍅 Foco+</h1>
         <p>Cronômetro Pomodoro para estudar com mais foco</p>
+        <nav>
+            <a href="/inicio">Cronômetro</a>
+            <a href="/tarefas">Minhas tarefas</a>
+        </nav>
     </header>
 
     <main>
         <section class="cartao">
             <h2>Como funciona</h2>
             <ol>
-                <li>Escolha o que você vai estudar e anote na lista de tarefas.</li>
+                <li>Cadastre o que você vai estudar em "Minhas tarefas".</li>
                 <li>Inicie o cronômetro e foque por 25 minutos.</li>
-                <li>Quando o tempo acabar, faça uma pausa curta de 5 minutos.</li>
+                <li>Quando o tempo acabar, registre o pomodoro na tarefa e faça uma pausa curta de 5 minutos.</li>
                 <li>A cada 4 ciclos de foco, faça uma pausa longa de 15 minutos.</li>
             </ol>
         </section>
@@ -41,13 +45,20 @@
         </section>
 
         <section class="cartao">
-            <h2>Tarefas de hoje</h2>
-            <form onsubmit="adicionarTarefa(); return false;">
-                <input id="nova-tarefa" type="text" placeholder="Ex.: Revisar herança e polimorfismo">
-                <button type="submit">Adicionar</button>
-            </form>
-            <ul id="lista-tarefas"></ul>
-            <p class="dica">Clique em uma tarefa para marcá-la como feita.</p>
+            <h2>Tarefas pendentes</h2>
+            % if pendentes:
+            <ul class="pendentes">
+                % for tarefa in pendentes:
+                <li>
+                    <strong>{{tarefa.titulo}}</strong>
+                    <span>{{tarefa.materia}} · {{tarefa.feitos}} de {{tarefa.pomodoros}} pomodoros</span>
+                </li>
+                % end
+            </ul>
+            % else:
+            <p class="dica">Nenhuma tarefa pendente. Cadastre uma em "Minhas tarefas".</p>
+            % end
+            <a class="link-botao" href="/tarefas">Gerenciar tarefas</a>
         </section>
     </main>
 

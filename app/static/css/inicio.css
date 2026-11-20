@@ -1,4 +1,4 @@
-/* inicio.css: estilos da página Foco+ */
+/* inicio.css: estilos base do Foco+ (usados em todas as páginas) */
 
 /* a cor principal muda conforme o modo (o JS troca a classe do body) */
 body.foco {
@@ -24,13 +24,27 @@ header {
     background-color: var(--cor);
     color: white;
     text-align: center;
-    padding: 30px 20px;
+    padding: 30px 20px 16px;
     transition: background-color 0.5s;
 }
 
 header h1 {
     margin: 0;
     font-size: 2.5em;
+}
+
+/* menu de navegação entre as páginas */
+nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    margin: 0 10px;
+    padding: 4px 10px;
+    border-radius: 6px;
+}
+
+nav a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 main {
@@ -56,7 +70,9 @@ li {
 }
 
 /* botões */
-button {
+button,
+.link-botao {
+    display: inline-block;
     background-color: var(--cor);
     color: white;
     border: 2px solid var(--cor);
@@ -64,10 +80,12 @@ button {
     margin: 0 4px;
     border-radius: 8px;
     font-size: 1em;
+    text-decoration: none;
     cursor: pointer;
 }
 
-button:hover {
+button:hover,
+.link-botao:hover {
     opacity: 0.85;
 }
 
@@ -101,29 +119,28 @@ body.longa .modo-longa {
     color: var(--cor);
 }
 
-/* lista de tarefas */
-form {
-    display: flex;
-    gap: 8px;
+/* lista de tarefas pendentes */
+.pendentes {
+    list-style: none;
+    padding: 0;
+}
+
+.pendentes li {
+    padding: 8px 0;
+    border-bottom: 1px solid #F1E4DA;
+}
+
+.pendentes span {
+    display: block;
+    color: #6B7280;
+    font-size: 0.9em;
 }
 
 input {
-    flex: 1;
     padding: 10px;
     border: 2px solid #E5E7EB;
     border-radius: 8px;
     font-size: 1em;
-}
-
-#lista-tarefas li {
-    padding: 8px 0;
-    border-bottom: 1px solid #F1E4DA;
-    cursor: pointer;
-}
-
-#lista-tarefas li.feita {
-    color: #9CA3AF;
-    text-decoration: line-through;
 }
 
 .dica {

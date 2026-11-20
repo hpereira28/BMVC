@@ -1,0 +1,95 @@
+/* tarefas.css: estilos das páginas de tarefas (lista e edição) */
+
+/* a página de tarefas é mais larga por causa da tabela */
+main.largo {
+    max-width: 900px;
+}
+
+/* formulário de nova tarefa / editar */
+.form-tarefa {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: flex-end;
+}
+
+.form-tarefa label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    color: #6B7280;
+    font-size: 0.9em;
+}
+
+.form-tarefa input[name="titulo"] {
+    width: 240px;
+}
+
+.form-tarefa input[name="pomodoros"] {
+    width: 80px;
+}
+
+/* tabela de tarefas */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    text-align: left;
+    color: var(--cor);
+    padding: 10px 8px;
+    border-bottom: 2px solid #F1E4DA;
+}
+
+td {
+    padding: 10px 8px;
+    border-bottom: 1px solid #F1E4DA;
+    vertical-align: middle;
+}
+
+/* tarefa concluída: texto riscado e mais claro */
+tr.feita td {
+    color: #9CA3AF;
+}
+
+tr.feita td:first-child {
+    text-decoration: line-through;
+}
+
+/* barrinha de progresso dos pomodoros */
+.barra {
+    width: 90px;
+    height: 8px;
+    background-color: #F1E4DA;
+    border-radius: 4px;
+    margin-top: 4px;
+    overflow: hidden;
+}
+
+.preenchida {
+    height: 100%;
+    background-color: #2A9D8F;
+}
+
+/* botões pequenos na coluna de ações */
+.acoes form {
+    display: inline;
+}
+
+.acoes button,
+.acoes .link-botao {
+    padding: 5px 10px;
+    margin: 2px;
+    font-size: 0.85em;
+}
+
+.perigo {
+    background-color: #B91C1C;
+    border-color: #B91C1C;
+}
+
+.secundario {
+    background-color: white;
+    color: var(--cor);
+}
