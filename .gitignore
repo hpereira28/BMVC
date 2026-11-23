@@ -1,3 +1,4 @@
 __pycache__/
 *.pyc
 app/controllers/db/tarefas.json
+app/controllers/db/estudantes.json
