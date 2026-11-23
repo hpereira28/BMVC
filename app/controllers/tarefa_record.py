@@ -3,7 +3,8 @@ import json
 
 
 class TarefaRecord():
-    """Banco de dados JSON para o recurso Tarefas"""
+    """Banco de dados JSON para o recurso Tarefas.
+    Cada tarefa tem um dono, e cada estudante só enxerga as próprias tarefas."""
 
     def __init__(self, arquivo="app/controllers/db/tarefas.json"):
         self.__arquivo = arquivo
@@ -28,34 +29,39 @@ class TarefaRecord():
 
     # ---------- CRUD ----------
 
-    def create(self, titulo, materia, pomodoros):
+    def create(self, dono, titulo, materia, pomodoros):
         novo_id = 1
         for tarefa in self.__tarefas:
             if tarefa.id >= novo_id:
                 novo_id = tarefa.id + 1
-        nova = Tarefa(novo_id, titulo, materia, pomodoros)
+        nova = Tarefa(novo_id, dono, titulo, materia, pomodoros)
         self.__tarefas.append(nova)
         self.save()
         return nova
 
 
-    def read_all(self):
-        return self.__tarefas
+    def read_all(self, dono):
+        tarefas_do_dono = []
+        for tarefa in self.__tarefas:
+            if tarefa.dono == dono:
+                tarefas_do_dono.append(tarefa)
+        return tarefas_do_dono
 
 
-    def read_one(self, id):
+    def read_one(self, id, dono):
         try:
             id = int(id)  # a rota manda o id como texto
         except ValueError:
             return None   # id inválido, por exemplo /tarefas/editar/abc
         for tarefa in self.__tarefas:
-            if tarefa.id == id:
+            # só devolve a tarefa se ela for do estudante logado
+            if tarefa.id == id and tarefa.dono == dono:
                 return tarefa
         return None  # não achou
 
 
-    def update(self, id, titulo, materia, pomodoros):
-        tarefa = self.read_one(id)
+    def update(self, id, dono, titulo, materia, pomodoros):
+        tarefa = self.read_one(id, dono)
         if tarefa:
             tarefa.titulo = titulo
             tarefa.materia = materia
@@ -63,8 +69,8 @@ class TarefaRecord():
             self.save()
 
 
-    def delete(self, id):
-        tarefa = self.read_one(id)
+    def delete(self, id, dono):
+        tarefa = self.read_one(id, dono)
         if tarefa:
             self.__tarefas.remove(tarefa)
             self.save()
@@ -72,15 +78,15 @@ class TarefaRecord():
 
     # ---------- ações extras (também são "update") ----------
 
-    def registrar_pomodoro(self, id):
-        tarefa = self.read_one(id)
+    def registrar_pomodoro(self, id, dono):
+        tarefa = self.read_one(id, dono)
         if tarefa:
             tarefa.registrar_pomodoro()
             self.save()
 
 
-    def alternar_concluida(self, id):
-        tarefa = self.read_one(id)
+    def alternar_concluida(self, id, dono):
+        tarefa = self.read_one(id, dono)
         if tarefa:
             tarefa.alternar_concluida()
             self.save()

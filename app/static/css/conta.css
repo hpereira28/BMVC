@@ -1,0 +1,44 @@
+/* conta.css: estilos das páginas de login (entrar) e cadastro */
+
+/* cartão mais estreito, centralizado */
+main.estreito {
+    max-width: 420px;
+}
+
+.form-conta {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.form-conta label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    color: #6B7280;
+    font-size: 0.9em;
+}
+
+/* a caixinha "Mostrar senha" fica na mesma linha do texto */
+.form-conta label.mostrar {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+}
+
+.form-conta button {
+    margin: 0;
+}
+
+/* mensagem que o servidor manda (erro ou "conta criada") */
+.mensagem {
+    background-color: #FFF4CC;
+    color: #8A5A00;
+    padding: 10px 14px;
+    border-radius: 8px;
+}
+
+.cartao a {
+    color: var(--cor);
+    font-weight: bold;
+}

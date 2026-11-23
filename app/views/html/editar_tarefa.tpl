@@ -10,14 +10,7 @@
 </head>
 <body class="foco">
 
-    <header>
-        <h1>🍅 Foco+</h1>
-        <p>Editar tarefa</p>
-        <nav>
-            <a href="/inicio">Cronômetro</a>
-            <a href="/tarefas">Minhas tarefas</a>
-        </nav>
-    </header>
+    % include('app/views/html/cabecalho.tpl', estudante=estudante, subtitulo='Editar tarefa')
 
     <main>
         <section class="cartao">

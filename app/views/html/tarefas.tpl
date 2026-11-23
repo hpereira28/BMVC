@@ -10,14 +10,7 @@
 </head>
 <body class="foco">
 
-    <header>
-        <h1>🍅 Foco+</h1>
-        <p>Organize o que você vai estudar</p>
-        <nav>
-            <a href="/inicio">Cronômetro</a>
-            <a href="/tarefas">Minhas tarefas</a>
-        </nav>
-    </header>
+    % include('app/views/html/cabecalho.tpl', estudante=estudante, subtitulo='Organize o que você vai estudar')
 
     <main class="largo">
         <section class="cartao">
@@ -37,7 +30,7 @@
         </section>
 
         <section class="cartao">
-            <h2>Minhas tarefas</h2>
+            <h2>Tarefas de {{estudante.nome}}</h2>
             % if tarefas:
             <table>
                 <thead>

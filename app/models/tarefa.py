@@ -1,8 +1,9 @@
 class Tarefa():
     """Uma tarefa de estudo, medida em pomodoros (blocos de 25 minutos)."""
 
-    def __init__(self, id, titulo, materia, pomodoros, feitos=0, concluida=False):
+    def __init__(self, id, dono, titulo, materia, pomodoros, feitos=0, concluida=False):
         self.id = id
+        self.dono = dono              # login do estudante dono da tarefa
         self.titulo = titulo
         self.materia = materia
         self.pomodoros = pomodoros    # quantos pomodoros a tarefa deve levar
