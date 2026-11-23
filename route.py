@@ -28,7 +28,53 @@ def action_inicio():
     return ctl.render('inicio')
 
 
-# CRUD de tarefas
+# Login, cadastro e logout
+
+@app.route('/entrar', method='GET')
+def action_entrar():
+    if request.query.get('novo'):
+        return ctl.render('entrar', 'Conta criada! Agora é só entrar.')
+    return ctl.render('entrar')
+
+
+@app.route('/entrar', method='POST')
+def action_autenticar():
+    login = request.forms.getunicode('login', '')
+    senha = request.forms.getunicode('senha', '')
+    session_id = ctl.autenticar(login, senha)
+    if session_id:
+        # guarda o código da sessão no navegador por 1 hora
+        # httponly=True: o JavaScript da página não consegue ler esse cookie
+        response.set_cookie('session_id', session_id, httponly=True, max_age=3600)
+        redirect('/tarefas')
+    return ctl.render('entrar', 'Login ou senha incorretos.')
+
+
+@app.route('/cadastro', method='GET')
+def action_cadastro():
+    return ctl.render('cadastro')
+
+
+@app.route('/cadastro', method='POST')
+def action_cadastrar():
+    nome = request.forms.getunicode('nome', '')
+    login = request.forms.getunicode('login', '')
+    senha = request.forms.getunicode('senha', '')
+    confirmacao = request.forms.getunicode('confirmacao', '')
+    erro = ctl.cadastrar(nome, login, senha, confirmacao)
+    if erro:
+        return ctl.render('cadastro', erro)
+    redirect('/entrar?novo=1')
+
+
+@app.route('/sair', method='POST')
+def action_sair():
+    ctl.sair()
+    response.delete_cookie('session_id')
+    redirect('/inicio')
+
+
+# CRUD de tarefas (páginas restritas: o controlador exige login)
 
 @app.route('/tarefas', method='GET')
 def action_tarefas():
