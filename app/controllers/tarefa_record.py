@@ -83,6 +83,7 @@ class TarefaRecord():
         if tarefa:
             tarefa.registrar_pomodoro()
             self.save()
+        return tarefa  # o controlador usa para avisar o mural
 
 
     def alternar_concluida(self, id, dono):
@@ -90,3 +91,4 @@ class TarefaRecord():
         if tarefa:
             tarefa.alternar_concluida()
             self.save()
+        return tarefa

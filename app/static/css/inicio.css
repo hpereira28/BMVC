@@ -166,6 +166,61 @@ input {
     font-size: 0.9em;
 }
 
+/* cartão "Sala de estudos ao vivo" (atualizado pelo WebSocket) */
+.status-conexao {
+    font-size: 0.55em;
+    color: #9CA3AF;
+    vertical-align: middle;
+    margin-left: 8px;
+}
+
+.status-conexao.online {
+    color: #2A9D8F;
+}
+
+.numeros-ao-vivo {
+    display: flex;
+    gap: 12px;
+    text-align: center;
+}
+
+.numeros-ao-vivo div {
+    flex: 1;
+    background-color: #FFF8F3;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.numeros-ao-vivo strong {
+    display: block;
+    font-size: 2em;
+    color: var(--cor);
+}
+
+.numeros-ao-vivo span {
+    color: #6B7280;
+    font-size: 0.85em;
+}
+
+.lista-atividades {
+    list-style: none;
+    padding: 0;
+}
+
+.lista-atividades li {
+    padding: 6px 0;
+    border-bottom: 1px solid #F1E4DA;
+}
+
+/* o JS coloca esta classe por um instante quando chega novidade */
+.ao-vivo {
+    transition: box-shadow 0.3s;
+}
+
+.ao-vivo.piscar {
+    box-shadow: 0 0 0 3px #2A9D8F;
+}
+
 footer {
     text-align: center;
     color: #6B7280;

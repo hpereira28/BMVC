@@ -1,11 +1,12 @@
 from app.controllers.tarefa_record import TarefaRecord
 from app.controllers.estudante_record import EstudanteRecord
+from app.controllers.mural import Mural
 from bottle import template, redirect, request
 
 
 class Application():
 
-    def __init__(self):
+    def __init__(self, sio):
         self.pages = {
             'inicio': self.inicio,
             'entrar': self.entrar,
@@ -14,9 +15,14 @@ class Application():
             'editar_tarefa': self.editar_tarefa
         }
 
-        # composição: Application -> TarefaRecord e Application -> EstudanteRecord
+        # composição: Application -> TarefaRecord, EstudanteRecord e Mural
         self.__tarefas = TarefaRecord()
         self.__estudantes = EstudanteRecord()
+        self.__mural = Mural()
+
+        # associação: o servidor de WebSocket é criado no route.py e só usado aqui
+        self.__sio = sio
+        self.__conectados = 0  # quantas páginas do Foco+ estão abertas agora
 
 
     def render(self, page, parameter=None):
@@ -52,7 +58,11 @@ class Application():
 
     def autenticar(self, login, senha):
         self.sair()  # se já tinha alguém logado neste navegador, desconecta antes
-        return self.__estudantes.entrar(login.strip().lower(), senha)
+        session_id = self.__estudantes.entrar(login.strip().lower(), senha)
+        if session_id:
+            estudante = self.__estudantes.estudante_da_sessao(session_id)
+            self.avisar(estudante, "entrou no Foco+")
+        return session_id
 
 
     def cadastrar(self, nome, login, senha, confirmacao):
@@ -120,8 +130,9 @@ class Application():
         titulo = titulo.strip()
         if titulo == "":
             return  # não cria tarefa sem título
-        self.__tarefas.create(estudante.login, titulo, materia.strip(),
-                              self.converter_pomodoros(pomodoros))
+        tarefa = self.__tarefas.create(estudante.login, titulo, materia.strip(),
+                                       self.converter_pomodoros(pomodoros))
+        self.avisar(estudante, "criou uma tarefa" + self.de_materia(tarefa))
 
 
     def atualizar_tarefa(self, id, titulo, materia, pomodoros):
@@ -140,12 +151,16 @@ class Application():
 
     def registrar_pomodoro(self, id):
         estudante = self.exigir_login()
-        self.__tarefas.registrar_pomodoro(id, estudante.login)
+        tarefa = self.__tarefas.registrar_pomodoro(id, estudante.login)
+        if tarefa:
+            self.avisar(estudante, "fez um pomodoro" + self.de_materia(tarefa), foi_pomodoro=True)
 
 
     def alternar_tarefa(self, id):
         estudante = self.exigir_login()
-        self.__tarefas.alternar_concluida(id, estudante.login)
+        tarefa = self.__tarefas.alternar_concluida(id, estudante.login)
+        if tarefa and tarefa.concluida:
+            self.avisar(estudante, "concluiu uma tarefa" + self.de_materia(tarefa))
 
 
     def converter_pomodoros(self, texto):
@@ -159,3 +174,33 @@ class Application():
         if numero > 20:
             return 20
         return numero
+
+
+    # ---------- WebSocket: mural ao vivo ----------
+
+    def cliente_conectou(self):
+        self.__conectados += 1
+        self.enviar_mural()
+
+
+    def cliente_desconectou(self):
+        self.__conectados -= 1
+        self.enviar_mural()
+
+
+    def avisar(self, estudante, texto, foi_pomodoro=False):
+        """Registra a atividade no mural e manda a novidade para todas as páginas abertas."""
+        self.__mural.registrar(estudante.primeiro_nome(), texto, foi_pomodoro)
+        self.enviar_mural()
+
+
+    def enviar_mural(self):
+        # emit manda o evento "mural" pelo WebSocket para todos os navegadores conectados
+        self.__sio.emit('mural', self.__mural.estado(self.__conectados))
+
+
+    def de_materia(self, tarefa):
+        # mostra só a matéria no mural (o título da tarefa fica privado)
+        if tarefa.materia:
+            return " de " + tarefa.materia
+        return ""

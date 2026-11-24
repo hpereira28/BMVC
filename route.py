@@ -1,10 +1,21 @@
+# esconde o aviso "Eventlet is deprecated" que aparece ao iniciar (ele não atrapalha o funcionamento)
+import warnings
+warnings.filterwarnings("ignore", message=r"\s*Eventlet is deprecated")
+
+# o eventlet precisa vir antes de tudo: ele deixa o servidor atender várias conexões ao mesmo tempo
+import eventlet
+eventlet.monkey_patch()
+
 from app.controllers.application import Application
 from bottle import Bottle, route, run, request, static_file
 from bottle import redirect, template, response
+import eventlet.wsgi
+import socketio
 
 
 app = Bottle()
-ctl = Application()
+sio = socketio.Server(async_mode='eventlet')  # servidor de WebSocket (Socket.IO)
+ctl = Application(sio)
 
 
 #-----------------------------------------------------------------------------
@@ -124,8 +135,24 @@ def action_concluir_tarefa(id):
 
 
 #-----------------------------------------------------------------------------
+# Eventos do WebSocket:
+
+@sio.event
+def connect(sid, environ):
+    ctl.cliente_conectou()          # alguém abriu uma página do Foco+
+
+
+@sio.event
+def disconnect(sid):
+    ctl.cliente_desconectou()       # alguém fechou a página
+
+
+#-----------------------------------------------------------------------------
 
 
 if __name__ == '__main__':
 
-    run(app, host='0.0.0.0', port=8080, debug=True)
+    # junta o Bottle (páginas) com o Socket.IO (WebSocket) num servidor só
+    servidor = socketio.WSGIApp(sio, app)
+    print("Foco+ rodando em http://localhost:8080")
+    eventlet.wsgi.server(eventlet.listen(('0.0.0.0', 8080)), servidor)

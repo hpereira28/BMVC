@@ -6,6 +6,9 @@
     <title>Foco+ | Pomodoro para estudantes</title>
     <link rel="stylesheet" type="text/css" href="/static/css/inicio.css">
     <script src="/static/js/inicio.js"></script>
+    <!-- biblioteca do Socket.IO (WebSocket) e o nosso script do mural ao vivo -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js"></script>
+    <script src="/static/js/aovivo.js"></script>
 </head>
 <body class="foco">
 
@@ -60,6 +63,8 @@
             <a class="link-botao secundario" href="/cadastro">Criar conta</a>
             % end
         </section>
+
+        % include('app/views/html/aovivo.tpl')
     </main>
 
     <footer>
